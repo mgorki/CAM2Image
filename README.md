@@ -9,4 +9,4 @@ Run main.py for running the program.
 2. Converting svg vector Graphics from 1. to png.
 3. Adding a prefix to filenames of several files
 
-(***Description to be expanded soon***)
+(***Readme to be expanded soon***)
