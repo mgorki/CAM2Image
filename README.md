@@ -8,3 +8,5 @@ Run main.py for running the program.
 1. Automating the creation of svg vector graphics from CAM files 
 2. Converting svg vector Graphics from 1. to png.
 3. Adding a prefix to filenames of several files
+
+(***Description to be expanded soon***)
