@@ -52,3 +52,13 @@ def prepSVGsForConversion(filePaths):
             print("There was an error with ", str(filePath), ": ", str(error))
     
     return namePathDict
+
+
+def addPrefix(filePath, prefix):
+    dirName = os.path.dirname(filePath)
+    originalFileName = str(os.path.basename(filePath))
+    newFileName = prefix + originalFileName
+    newFilePath = os.path.join(dirName, newFileName) 
+    os.rename(filePath, newFilePath)
+
+    return originalFileName, newFileName, dirName

@@ -9,16 +9,30 @@ messages = {
 
     "msgLoadingSVGs": """Select SVG files that should be converted to png format""",
 
+    "msgChooseFilesForRenamingPrefix": """Select files you want to rename by adding a prefix to their filename""",
+
     "msgSavingFolder": """Select Folder where results should be saved.
         -> Please mind that only folders (not the files they may contain) are shown on this screen, so make sure you do not overwrite existing files""",
 
     "msgEnterAdress": """Please enter the exact adress where CAMEL is deployed with researcher buttons (the variable "ShowResearcherButtons" must be set to "true" in the respective config file).
         -> This might be a web-adress (like e.g., https://weblab.uni-xyz.edu/publix/123...) if deployed on a web server or a local adress (like e.g., http://123.0.0.1:5500/), if you are running CAMEL locally on your machine""",
 
+    "msgEnterPrefix": """Please enter the prefix you want to add to your filename(s).
+        -> Make sure the resulting filename doesn't already exist unless you want to overwrite an existing file""",
+
+    "msgDecideWhichOperation" : """Please choose which operation ypu want to perform""",    
+    
     "msgDecideCAMs2SVG": """Do you want to create vector graphics (SVGs) from CAM-files?""",
 
     "msgDecideSVGsConversion": """Do you want to convert SVG vector graphics (like the CAM-graphics) into PNG formate?"""
 }
+
+buttonTexts = {
+    "btnGetSVGs": 'Get vector graphics (SVGs) from CAMs',
+    "btnConvertSVG2PNG": 'Convert vector graphics (SVGs) into PNG-formate',
+    "btnAddPreffix": 'Rename files by adding a preffix to filenames'    
+}
+
 
 
 
@@ -70,7 +84,8 @@ def MissingInput():
 
 
 def chooseFiles(fileTypes=None, msg=messages["msgLoadingSVGs"]):
-    fileTypes = ("Any type", "*") if fileTypes == None else tuple([("Any type", "*"), *fileTypes])
+    fileTypes = [("Any type", "*")] if fileTypes == None else tuple([("Any type", "*"), *fileTypes])
+    print(fileTypes)
     files = sg.popup_get_file(msg, multiple_files=True, file_types=(fileTypes), title="Select files")
     print(files.split(';'))
     if files == "" or None:
@@ -80,7 +95,33 @@ def chooseFiles(fileTypes=None, msg=messages["msgLoadingSVGs"]):
         return files.split(';')
 
 
-### Yes/No decisions ###
+### Decisions ###
+
+def decideWhichOperation():
+    layout = [
+        [sg.Text((messages["msgDecideWhichOperation"]))], 
+        [sg.Button(buttonTexts["btnGetSVGs"]), sg.Button(buttonTexts["btnConvertSVG2PNG"]), sg.Button(buttonTexts["btnAddPreffix"])],
+        ] 
+    window = sg.Window(title="Choose an operation", layout=layout) # Create the window
+
+    # Create an event loop
+    while True:
+        event, values = window.read()
+        # End program if user closes window or
+        # presses the OK button
+        if (event == buttonTexts["btnGetSVGs"]) or (event == buttonTexts["btnConvertSVG2PNG"]) or (event == buttonTexts["btnAddPreffix"]) or (event == sg.WIN_CLOSED):
+            break
+    window.close()
+    print(event)
+    if event == sg.WIN_CLOSED:
+        print("Exited by user")
+        return("Exit")  # Exit the whole program
+    else: 
+        ## Find the key in the buttonTexts dictionary that belonmgs to the event (the value) and return it
+        for key, value in buttonTexts.items(): 
+            if event == value:
+                return key
+    
 
 def decideCAMs2SVG():
     layout = [[sg.Text((messages["msgDecideCAMs2SVG"]))], 
@@ -99,7 +140,7 @@ def decideCAMs2SVG():
         return True
     else:
         return False
-
+    
 
 def decideImageConversion():
     layout = [[sg.Text((messages["msgDecideSVGsConversion"]))], 
@@ -123,13 +164,23 @@ def decideImageConversion():
 ### Text-input windows ###
 
 def enterAdress():
-    adress = sg.popup_get_text(messages["msgEnterAdress"], title="Enter column-names")
+    adress = sg.popup_get_text(messages["msgEnterAdress"], title="Enter adress")
     if adress == "" or None:
         MissingInput()
         enterAdress()
     else:
         print("The chosen adress where CAMEL is deployed is: " + str(adress))
         return str(adress)
+
+
+def enterPrefix():
+    prefix = sg.popup_get_text(messages["msgEnterPrefix"], title="Enter Prefix")
+    if prefix == "" or None:
+        MissingInput()
+        enterPrefix()
+    else:
+        print("The chosen prefix is: " + str(prefix))
+        return str(prefix)
 
 
 ### Folder/File selection windows ###
@@ -155,5 +206,24 @@ def chooseSavingFolder():
         return folder
 
 
+### Other ###
 
+def completion(operation=None):
+    if operation == None:
+        layout = [[sg.Text(("Operation completed."))], [sg.Button("OK")]] 
+    else:
+        layout = [[sg.Text((str(operation) + " completed."))], [sg.Button("OK")]]
+
+    # Create the window
+    window = sg.Window("Finished", layout)
+
+    # Create an event loop
+    while True:
+        event, values = window.read()
+        # End program if user closes window or
+        # presses the OK button
+        if event == "OK" or event == sg.WIN_CLOSED:
+            break
+
+    window.close()
 
