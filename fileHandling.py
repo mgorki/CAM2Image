@@ -65,7 +65,8 @@ def addPrefix(filePath, prefix):
     return originalFileName, newFileName, dirName
 
 
-def splitFile(file, prefix):
+## Function to split a file that contains data from several CAMs into several files (one file per CAM) 
+def splitFile(file, prefix):  
     savefolder = outputFolder()
     filesCreated = 0
     filesFailed = 0
