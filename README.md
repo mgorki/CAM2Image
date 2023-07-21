@@ -8,5 +8,6 @@ Run main.py for running the program.
 1. Automating the creation of svg vector graphics from whole folders of CAM files 
 2. Converting svg vector graphics (from 1.) to png.
 3. Adding a prefix to filenames of several files
+4. Splitting a file that contains data from several CAMs into several files (one file per CAM) -> prerequisite for 1 in some cases
 
 (***Readme to be expanded soon***)
