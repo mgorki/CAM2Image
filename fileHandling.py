@@ -1,5 +1,6 @@
 
 import os
+import json
 from pathlib import Path
 import cam2imageGUI as GUI
 
@@ -35,7 +36,7 @@ def outputFolder():
         if os.path.isdir(saveDir):  # Checking if chosen folder is valid (if not user has to choose again)
             return str(Path(saveDir))  # Path module is called to make sure formating is correct
         elif saveDir == None:  # This is the case if the user clicks on "Cancel"
-            print("Operation canceled. No images are saved. Crashing now.")
+            print("Operation canceled. Nothing was saved. Crashing now.")
             saveDir = "placeholder"
             return saveDir
         else:
@@ -62,3 +63,42 @@ def addPrefix(filePath, prefix):
     os.rename(filePath, newFilePath)
 
     return originalFileName, newFileName, dirName
+
+
+def splitFile(file, prefix):
+    savefolder = outputFolder()
+    filesCreated = 0
+    filesFailed = 0
+    lines = open(file).readlines()
+    for line in lines:
+        try:
+            CAM = json.loads(line)  # Returning json file as a python dict
+            creator = str(CAM["creator"])
+            idCAM = str(CAM["idCAM"])
+            nameCAM = creator if not idCAM == "" else "noCreator"
+            fileWritten = False
+            i = 0
+            while not fileWritten:
+                index = str(i) if i > 0 else ""
+                filename = (nameCAM + str(prefix) + index + ".txt")
+                savePath = os.path.join(savefolder, filename)
+                if os.path.isfile(savePath):
+                    i += 1
+                else: 
+                    with open(savePath, 'w') as f:
+                        f.write(line)
+                    fileWritten = True
+            filesCreated += 1
+        except:
+            filesFailed += 1
+       
+    return filesCreated, filesFailed
+
+
+
+    '''
+    data = json.load(f)  # Returning json file as a python dict
+
+    for key, value in data.items():
+        print(str(key), ": ", str(value)) 
+    '''

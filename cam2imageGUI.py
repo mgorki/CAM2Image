@@ -11,6 +11,8 @@ messages = {
 
     "msgChooseFilesForRenamingPrefix": """Select files you want to rename by adding a prefix to their filename""",
 
+    "msgChooseJSON": """Select the JSON/txt file that contains the data of more than one CAM""",
+
     "msgSavingFolder": """Select Folder where results should be saved.
         -> Please mind that only folders (not the files they may contain) are shown on this screen, so make sure you do not overwrite existing files""",
 
@@ -30,10 +32,9 @@ messages = {
 buttonTexts = {
     "btnGetSVGs": 'Get vector graphics (SVGs) from CAMs',
     "btnConvertSVG2PNG": 'Convert vector graphics (SVGs) into PNG-formate',
-    "btnAddPreffix": 'Rename files by adding a preffix to filenames'    
+    "btnAddPreffix": 'Rename files by adding a preffix to filenames',    
+    "splitFile": 'Split a single file containing multiple CAMs into several files with one file per CAM'    
 }
-
-
 
 
 ### Error Windows ###
@@ -83,16 +84,19 @@ def MissingInput():
     window.close()
 
 
-def chooseFiles(fileTypes=None, msg=messages["msgLoadingSVGs"]):
+def chooseFiles(fileTypes=None, msg=messages["msgLoadingSVGs"], multiple=True):
     fileTypes = [("Any type", "*")] if fileTypes == None else tuple([("Any type", "*"), *fileTypes])
     print(fileTypes)
-    files = sg.popup_get_file(msg, multiple_files=True, file_types=(fileTypes), title="Select files")
+    files = sg.popup_get_file(msg, multiple_files=multiple, file_types=(fileTypes), title="Select files")
     print(files.split(';'))
     if files == "" or None:
         missingPath()
-        chooseFiles(fileTypes=fileTypes)
+        chooseFiles(fileTypes=fileTypes, msg=msg, multiple=multiple)
     else:
-        return files.split(';')
+        if multiple:
+            return files.split(';')
+        else:
+            return files
 
 
 ### Decisions ###
@@ -100,7 +104,7 @@ def chooseFiles(fileTypes=None, msg=messages["msgLoadingSVGs"]):
 def decideWhichOperation():
     layout = [
         [sg.Text((messages["msgDecideWhichOperation"]))], 
-        [sg.Button(buttonTexts["btnGetSVGs"]), sg.Button(buttonTexts["btnConvertSVG2PNG"]), sg.Button(buttonTexts["btnAddPreffix"])],
+        [sg.Button(buttonTexts["btnGetSVGs"]), sg.Button(buttonTexts["btnConvertSVG2PNG"]), sg.Button(buttonTexts["btnAddPreffix"]), sg.Button(buttonTexts["splitFile"])],
         ] 
     window = sg.Window(title="Choose an operation", layout=layout) # Create the window
 
@@ -109,7 +113,7 @@ def decideWhichOperation():
         event, values = window.read()
         # End program if user closes window or
         # presses the OK button
-        if (event == buttonTexts["btnGetSVGs"]) or (event == buttonTexts["btnConvertSVG2PNG"]) or (event == buttonTexts["btnAddPreffix"]) or (event == sg.WIN_CLOSED):
+        if (event == buttonTexts["btnGetSVGs"]) or (event == buttonTexts["btnConvertSVG2PNG"]) or (event == buttonTexts["btnAddPreffix"]) or (event == buttonTexts["splitFile"]) or (event == sg.WIN_CLOSED):
             break
     window.close()
     print(event)

@@ -1,7 +1,11 @@
-from pathlib import Path
+import sys
+#from pathlib import Path
 import createImages
 import cam2imageGUI as GUI
 import fileHandling
+
+
+this = sys.modules[__name__]  # this is a pointer to the module object instance itself. Used for explicity accessing the adress variable module-wide but not-globaly.
 
 
 ##### General Settings #####
@@ -14,13 +18,13 @@ inputFileFormats = [".json", ".txt"]  # Allowed file formats for CAM-files
 ### Creating SVGs from CAM-files ###
 def cams2Images():
     try:
-        if type(adress) is str and adress is not ("" or None):  # If The (web/lokal) adress where CAMEL is deployed is not already defined above 
+        if type(this.adress) is str and this.adress is not ("" or None):  # If The (web/lokal) adress where CAMEL is deployed is not already defined above 
             print("adress where CAMEL is deployed has been pre-defined in in main.py")
             pass
         else:
-            adress = GUI.enterAdress()  # Open GUI for entering the (web/lokal) adress where CAMEL is deployed (-> check the adress bar in your browser.
+            this.adress = GUI.enterAdress()  # Open GUI for entering the (web/lokal) adress where CAMEL is deployed (-> check the adress bar in your browser.
     except:
-        adress = GUI.enterAdress()  # Open GUI for entering the (web/lokal) adress where CAMEL is deployed (-> check the adress bar in your browser.
+        this.adress = GUI.enterAdress()  # Open GUI for entering the (web/lokal) adress where CAMEL is deployed (-> check the adress bar in your browser.
 
     ### Coosing folder of CAMs (input) and folder where images (SVGs) of CAMs shall be saved, both by GUIs ###
     try:
@@ -32,6 +36,7 @@ def cams2Images():
         createImages.createSVGs(driver=browser, filesIn=files)  # Opening CAMEL in the browser Window, Loading CAMs into CAMEL ans saving a SVG of each CAM 
 
         browser.quit()  # Closing browser window(s) opened by the program
+        GUI.completion()
     except:
         print("There was a problem with getting the vector graphics. Returning to the main menue")
     
@@ -61,6 +66,14 @@ def prefix2Filenames():
         print("There was an error at adding a prefix")
 
 
+def splitFile2Files():
+    try:
+        CAMfile = GUI.chooseFiles(msg=GUI.messages["msgChooseJSON"], fileTypes=[("JSON", ".json"), ("txt", ".txt")], multiple=False)
+        numFilesCreated, numFilesFailed = fileHandling.splitFile(CAMfile, GUI.enterPrefix())
+        GUI.completion("File split into " + str(numFilesCreated) + " files" + " while writing " + str(numFilesFailed) + " failed. Operation")
+    except:
+        print("There was a fatal error at splitting the file")
+
 
 ###############################
 ##### Running the program #####
@@ -76,6 +89,9 @@ while True:
 
     elif operation == "btnConvertSVG2PNG":  # If user chooses to convert images
         svgs2pngs()  # Converting SVG files to PNG
-        
+
     elif operation == "btnAddPreffix":
         prefix2Filenames()  # Adding a prefix to chosen files
+
+    elif operation == "splitFile":
+        splitFile2Files()  # Splitting a single file containing data from multiple CAMs into several files with one file per CAM
