@@ -29,6 +29,8 @@ messages = {
     "msgDecideSVGsConversion": """Do you want to convert SVG vector graphics (like the CAM-graphics) into PNG formate?"""
 }
 
+
+### Text of buttons (dictionary) ###
 buttonTexts = {
     "btnGetSVGs": 'Get vector graphics (SVGs) from CAMs',
     "btnConvertSVG2PNG": 'Convert vector graphics (SVGs) into PNG-formate',
