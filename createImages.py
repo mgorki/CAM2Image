@@ -25,6 +25,7 @@ def initBrowser(adress, pathOut):
         return "fatal error"
 
 
+### Creates SVGs from CAM files, takes as parameters (1.) the browser where CAMEL is opened and (2.) the CAM files
 def createSVGs(driver, filesIn):
     for file in filesIn:
         ### Loading the CAM-file into CAMEL ###
@@ -43,8 +44,6 @@ def createSVGs(driver, filesIn):
         ### Saving the vector graphic (svg) file of the CAM ###
         try:
             rightButtons = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'rightButton')))  # Find the bar that contains (among others) the download CAM as picture button (wait till propperly loaded, timeout=10sec)
-            #pictureButton = rightButtons.find_element(by=By.ID, value='saveCAMpicture')  # Find the 'Save CAM as picture' button 
-            #time.sleep(10)
             pictureButton = WebDriverWait(driver, 30).until(EC.element_to_be_clickable((rightButtons.find_element(by=By.ID, value='saveCAMpicture'))))  # Find the 'Save CAM as picture' button 
         except:
             print("'Save CAM as picture' button could NOT be found!")  
@@ -55,9 +54,10 @@ def createSVGs(driver, filesIn):
             print("there was an error clicking the 'Save CAM as picture' button for the following file: " + str(file) + " The error was" + str(error))
 
 
+### Converts SVGs to PNGs, takes as parameters (1.) a dict with names and paths of SVG files (2.) the path of the folder where PNGs are saved
 def convertSVGs(inputSVGsDict, pathOut):
     for fileName, filePath in inputSVGsDict.items():
-        print(fileName, " from ", filePath)
+        #print(fileName, " from ", filePath)
         try:
             fileOut = os.path.join(str(pathOut), str(str(fileName) + ".png"))
             cairosvg.svg2png(url=str(filePath), write_to=fileOut, dpi=1200, parent_height=1400, parent_width=2400, scale=3)
