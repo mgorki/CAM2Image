@@ -5,8 +5,8 @@ from pathlib import Path
 import cam2imageGUI as GUI
 
 
-### Returns a list of all files in a folder and (recursively) all its subfolders. 
-## If a list is given as the pattterns argument only files ending on the pattern will be returned (e.g., only table files of the json, txt, csv, xlsx format if patterns = [".json", ".csv", ".xlsx", ".txt"])
+## Returns a list of all files in a folder and (recursively) all its subfolders. 
+# If a list is given as the pattterns argument only files ending on the pattern will be returned (e.g., only table files of the json, txt, csv, xlsx format if patterns = [".json", ".csv", ".xlsx", ".txt"])
 def listFilesInFolder(folderPath: str, patterns = None) -> list:  
     #patterns = [".json", ".csv", ".xlsx", ".txt"]
     filepaths = []
@@ -24,12 +24,12 @@ def listFilesInFolder(folderPath: str, patterns = None) -> list:
     return filepaths   
 
 
-### Choosing a folder from which all CAM-files are loaded ###
+## Choosing a folder by GUI from which the paths of all files (of which the name ends with one of the strings specified by the patterns parameter) are returned 
 def inputFiles(patterns):
     return listFilesInFolder(folderPath=str(GUI.chooseLoadingFolder()), patterns=patterns)
 
 
-### Coosing a folder, where resulting images are saved ###
+## Coosing a folder for saving files
 def outputFolder():
     while True:
         saveDir = GUI.chooseSavingFolder()  # The user has to choose where to save the results
@@ -43,7 +43,8 @@ def outputFolder():
             GUI.invalidFolder()
             pass
     
-    
+
+## Takes a list of filepaths, creates a dict with the filenames as keys and the filepaths as values ##      
 def prepSVGsForConversion(filePaths):
     namePathDict = {}
     for filePath in filePaths:
@@ -55,6 +56,8 @@ def prepSVGsForConversion(filePaths):
     return namePathDict
 
 
+## Renames a file (specified by filePath parameter), by adding a Prefix (prefix parameter)
+# Returns the original filename, the new filename and the name of the directory where the renaming was done
 def addPrefix(filePath, prefix):
     dirName = os.path.dirname(filePath)
     originalFileName = str(os.path.basename(filePath))
@@ -62,10 +65,11 @@ def addPrefix(filePath, prefix):
     newFilePath = os.path.join(dirName, newFileName) 
     os.rename(filePath, newFilePath)
 
-    return originalFileName, newFileName, dirName
+    return originalFileName, newFileName, dirName  
 
 
 ## Function to split a file that contains data from several CAMs into several files (one file per CAM) 
+# Returns the number of files that were successfully created and the number of files of which the creation failed
 def splitFile(file, prefix):  
     savefolder = outputFolder()
     filesCreated = 0
@@ -94,12 +98,3 @@ def splitFile(file, prefix):
             filesFailed += 1
        
     return filesCreated, filesFailed
-
-
-
-    '''
-    data = json.load(f)  # Returning json file as a python dict
-
-    for key, value in data.items():
-        print(str(key), ": ", str(value)) 
-    '''
