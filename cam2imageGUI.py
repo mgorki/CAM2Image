@@ -39,7 +39,9 @@ buttonTexts = {
 }
 
 
+#####################
 ### Error Windows ###
+#####################
 
 def missingPath():
     layout = [[sg.Text("Path not propperly chosen")], [sg.Button("OK")]]
@@ -101,7 +103,9 @@ def chooseFiles(fileTypes=None, msg=messages["msgLoadingSVGs"], multiple=True):
             return files
 
 
+#################
 ### Decisions ###
+#################
 
 def decideWhichOperation():
     layout = [
@@ -164,7 +168,9 @@ def decideImageConversion():
         return False
 
 
+##########################
 ### Text-input windows ###
+##########################
 
 def enterAdress():
     adress = sg.popup_get_text(messages["msgEnterAdress"], title="Enter adress")
@@ -186,7 +192,9 @@ def enterPrefix():
         return str(prefix)
 
 
+#####################################
 ### Folder/File selection windows ###
+#####################################
 
 def chooseLoadingFolder():
     msg = messages["msgLoadingFolder"]
@@ -209,7 +217,9 @@ def chooseSavingFolder():
         return folder
 
 
+#############
 ### Other ###
+#############
 
 def completion(operation=None):
     if operation == None:
