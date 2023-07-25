@@ -49,6 +49,7 @@ def svgs2pngs():
         saveDirConversion = GUI.chooseSavingFolder()
         createImages.convertSVGs(inputSVGsDict=svgFilePathNameDict, pathOut=saveDirConversion)
         print("Converted images saved to: ", str(saveDirConversion))
+        GUI.completion()
     except:
         print("There was an error at SVG conversion")
 
