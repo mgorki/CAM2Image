@@ -4,8 +4,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.firefox.options import Options
-from svgpathtools import svg2paths
 import cairosvg 
+
 
 ### Opens Firefox, opens the local or web-adress (adress parameter) in the browser and sets the browsers download path (pathOut parameter)  
 def initBrowser(adress, pathOut):
