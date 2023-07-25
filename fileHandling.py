@@ -24,11 +24,6 @@ def listFilesInFolder(folderPath: str, patterns = None) -> list:
     return filepaths   
 
 
-## Choosing a folder by GUI from which the paths of all files (of which the name ends with one of the strings specified by the patterns parameter) are returned 
-def inputFiles(patterns):
-    return listFilesInFolder(folderPath=str(GUI.chooseLoadingFolder()), patterns=patterns)
-
-
 ## Coosing a folder for saving files
 def outputFolder():
     while True:

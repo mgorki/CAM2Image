@@ -28,7 +28,7 @@ def cams2Images():
 
     ### Coosing folder of CAMs (input) and folder where images (SVGs) of CAMs shall be saved, both by GUIs ###
     try:
-        files = fileHandling.inputFiles(patterns=inputFileFormats)
+        files = fileHandling.listFilesInFolder(folderPath=str(GUI.chooseLoadingFolder()), patterns=inputFileFormats)
         saveDir = fileHandling.outputFolder()
 
         ### opening a browser and saving SVGs of all CAMs contained in the folder specified above ###
