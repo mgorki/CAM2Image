@@ -39,7 +39,9 @@ buttonTexts = {
 }
 
 
+#####################
 ### Error Windows ###
+#####################
 
 def missingPath():
     layout = [[sg.Text("Path not propperly chosen")], [sg.Button("OK")]]
@@ -88,7 +90,7 @@ def MissingInput():
 
 def chooseFiles(fileTypes=None, msg=messages["msgLoadingSVGs"], multiple=True):
     fileTypes = [("Any type", "*")] if fileTypes == None else tuple([("Any type", "*"), *fileTypes])
-    print(fileTypes)
+    #print(fileTypes)
     files = sg.popup_get_file(msg, multiple_files=multiple, file_types=(fileTypes), title="Select files")
     print(files.split(';'))
     if files == "" or None:
@@ -101,7 +103,9 @@ def chooseFiles(fileTypes=None, msg=messages["msgLoadingSVGs"], multiple=True):
             return files
 
 
+#################
 ### Decisions ###
+#################
 
 def decideWhichOperation():
     layout = [
@@ -110,11 +114,10 @@ def decideWhichOperation():
         ] 
     window = sg.Window(title="Choose an operation", layout=layout) # Create the window
 
-    # Create an event loop
+    ## Create an event loop
     while True:
         event, values = window.read()
-        # End program if user closes window or
-        # presses the OK button
+        ## End program if user closes window or presses the OK button
         if (event == buttonTexts["btnGetSVGs"]) or (event == buttonTexts["btnConvertSVG2PNG"]) or (event == buttonTexts["btnAddPreffix"]) or (event == buttonTexts["splitFile"]) or (event == sg.WIN_CLOSED):
             break
     window.close()
@@ -134,11 +137,10 @@ def decideCAMs2SVG():
         [sg.Button("Yes"), sg.Button("No")],] 
     window = sg.Window("Convert images?", layout) # Create the window
 
-    # Create an event loop
+    ## Create an event loop
     while True:
         event, values = window.read()
-        # End program if user closes window or
-        # presses the OK button
+        ## End program if user closes window or presses the OK button
         if (event == "Yes") or (event == "No") or (event == sg.WIN_CLOSED):
             break
     window.close()
@@ -153,11 +155,10 @@ def decideImageConversion():
         [sg.Button("Yes"), sg.Button("No")],] 
     window = sg.Window("Convert images?", layout) # Create the window
 
-    # Create an event loop
+    ## Create an event loop
     while True:
         event, values = window.read()
-        # End program if user closes window or
-        # presses the OK button
+        ## End program if user closes window or presses the OK button
         if (event == "Yes") or (event == "No") or (event == sg.WIN_CLOSED):
             break
     window.close()
@@ -167,7 +168,9 @@ def decideImageConversion():
         return False
 
 
+##########################
 ### Text-input windows ###
+##########################
 
 def enterAdress():
     adress = sg.popup_get_text(messages["msgEnterAdress"], title="Enter adress")
@@ -189,7 +192,9 @@ def enterPrefix():
         return str(prefix)
 
 
+#####################################
 ### Folder/File selection windows ###
+#####################################
 
 def chooseLoadingFolder():
     msg = messages["msgLoadingFolder"]
@@ -212,7 +217,9 @@ def chooseSavingFolder():
         return folder
 
 
+#############
 ### Other ###
+#############
 
 def completion(operation=None):
     if operation == None:
@@ -220,14 +227,12 @@ def completion(operation=None):
     else:
         layout = [[sg.Text((str(operation) + " completed."))], [sg.Button("OK")]]
 
-    # Create the window
-    window = sg.Window("Finished", layout)
+    window = sg.Window("Finished", layout)  # Create the window
 
-    # Create an event loop
+    ## Create an event loop
     while True:
         event, values = window.read()
-        # End program if user closes window or
-        # presses the OK button
+        ## End program if user closes window or presses the OK button
         if event == "OK" or event == sg.WIN_CLOSED:
             break
 
