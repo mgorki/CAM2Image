@@ -15,4 +15,14 @@ Run main.py for running the program. Follow the instructions on the graphical us
     - Make sure you are using the most recent version of [*C.A.M.E.L.*](https://github.com/Camel-app/DataCollection/tree/main) and make sure to set *surpressSaveCAMpopup* in the *configfile* of to *true*.
     - Make sure data from one and *only one CAM is contained in each CAM file*. If this is not the case: Split the file into multiple files using the respective function in this program (see above).
 
+## Dependencies ##
+os
+sys
+selenium
+svgpathtools
+cairosvg 
+PySimpleGUI 
+json
+pathlib
+
 (***Readme to be expanded soon***)
