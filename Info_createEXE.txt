@@ -1,0 +1,1 @@
+pyinstaller main.py --onefile --add-data "C:\Users\ThinkPad\AppData\Local\Programs\Python\Python39\Lib\site-packages\cairosvg;cairosvg" --add-data "C:\Users\ThinkPad\AppData\Local\Programs\Python\Python39\Lib\site-packages\cairocffi;cairocffi"

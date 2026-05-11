@@ -22,7 +22,7 @@ messages = {
     "msgEnterPrefix": """Please enter the prefix you want to add to your filename(s).
         -> Make sure the resulting filename doesn't already exist unless you want to overwrite an existing file""",
 
-    "msgDecideWhichOperation" : """Please choose which operation ypu want to perform""",    
+    "msgDecideWhichOperation" : """Please choose which operation you want to perform""",    
     
     "msgDecideCAMs2SVG": """Do you want to create vector graphics (SVGs) from CAM-files?""",
 
@@ -35,7 +35,8 @@ buttonTexts = {
     "btnGetSVGs": 'Get vector graphics (SVGs) from CAMs',
     "btnConvertSVG2PNG": 'Convert vector graphics (SVGs) into PNG-formate',
     "btnAddPreffix": 'Rename files by adding a preffix to filenames',    
-    "splitFile": 'Split a single file containing multiple CAMs into several files with one file per CAM'    
+    "btnSplitFile": 'Split a single file containing multiple CAMs into several files with one file per CAM',
+    "btnCropSVGs": 'Crop vector graphics (SVGs)'    
 }
 
 
@@ -110,15 +111,15 @@ def chooseFiles(fileTypes=None, msg=messages["msgLoadingSVGs"], multiple=True):
 def decideWhichOperation():
     layout = [
         [sg.Text((messages["msgDecideWhichOperation"]))], 
-        [sg.Button(buttonTexts["btnGetSVGs"]), sg.Button(buttonTexts["btnConvertSVG2PNG"]), sg.Button(buttonTexts["btnAddPreffix"]), sg.Button(buttonTexts["splitFile"])],
-        ] 
+        [sg.Button(buttonTexts["btnGetSVGs"]), sg.Button(buttonTexts["btnConvertSVG2PNG"]), sg.Button(buttonTexts["btnAddPreffix"]), sg.Button(buttonTexts["btnSplitFile"]), sg.Button(buttonTexts["btnCropSVGs"])],
+    ] 
     window = sg.Window(title="Choose an operation", layout=layout) # Create the window
 
     ## Create an event loop
     while True:
         event, values = window.read()
         ## End program if user closes window or presses the OK button
-        if (event == buttonTexts["btnGetSVGs"]) or (event == buttonTexts["btnConvertSVG2PNG"]) or (event == buttonTexts["btnAddPreffix"]) or (event == buttonTexts["splitFile"]) or (event == sg.WIN_CLOSED):
+        if (event == buttonTexts["btnGetSVGs"]) or (event == buttonTexts["btnConvertSVG2PNG"]) or (event == buttonTexts["btnAddPreffix"]) or (event == buttonTexts["btnSplitFile"]) or (event == buttonTexts["btnCropSVGs"]) or (event == sg.WIN_CLOSED):
             break
     window.close()
     print(event)
@@ -126,7 +127,7 @@ def decideWhichOperation():
         print("Exited by user")
         return("Exit")  # Exit the whole program
     else: 
-        ## Find the key in the buttonTexts dictionary that belonmgs to the event (the value) and return it
+        ## Find the key in the buttonTexts dictionary that belongs to the event (the value) and return it
         for key, value in buttonTexts.items(): 
             if event == value:
                 return key

@@ -67,9 +67,11 @@ def addPrefix(filePath, prefix):
 # Returns the number of files that were successfully created and the number of files of which the creation failed
 def splitFile(file, prefix):  
     savefolder = outputFolder()
+    print("Outputfolder for split files is: ", savefolder)
     filesCreated = 0
     filesFailed = 0
-    lines = open(file).readlines()
+    lines = open(file, encoding='utf-8', mode='r').readlines()
+    print("Number of lines: ", str(len(lines)))
     for line in lines:
         try:
             CAM = json.loads(line)  # Returning json file as a python dict
@@ -85,7 +87,7 @@ def splitFile(file, prefix):
                 if os.path.isfile(savePath):
                     i += 1
                 else: 
-                    with open(savePath, 'w') as f:
+                    with open(savePath, encoding='utf-8', mode='w') as f:
                         f.write(line)
                     fileWritten = True
             filesCreated += 1

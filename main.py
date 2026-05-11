@@ -4,9 +4,9 @@ import createImages
 import cam2imageGUI as GUI
 import fileHandling
 
-
-this = sys.modules[__name__]  # this is a pointer to the module object instance itself. Used for explicity accessing the adress variable module-wide but not-globaly.
-
+## this is a pointer to the module object instance itself. 
+# Used for explicity accessing the adress variable module-wide but not-globaly.
+this = sys.modules[__name__]  
 
 ##### General Settings #####
 adress = None#"http://127.0.0.1:5500/"  # The (web/lokal) adress where CAMEL is deployed (-> check the adress bar in your browser. Adjust if needed). If chosen by GUI, this is set to None 
@@ -54,6 +54,19 @@ def svgs2pngs():
         print("There was an error at SVG conversion")
 
 
+### Cropping SVG files and saving them again as SVG files ###
+def svgs2cropped():
+    try:
+        svgFileList = GUI.chooseFiles(msg=GUI.messages["msgLoadingSVGs"], fileTypes=[("SVG", ".svg")])
+        svgFilePathNameDict = fileHandling.prepSVGsForConversion(svgFileList)
+        saveDirConversion = GUI.chooseSavingFolder()
+        createImages.cropSVGs(inputSVGsDict=svgFilePathNameDict, pathOut=saveDirConversion)
+        print("Cropped images saved to: ", str(saveDirConversion))
+        GUI.completion()
+    except:
+        print("There was an error at SVG cropping and/or conversion")
+
+
 ### Adding a prefix to chosen files ###
 def prefix2Filenames():
     try:
@@ -70,6 +83,7 @@ def prefix2Filenames():
 def splitFile2Files():
     try:
         CAMfile = GUI.chooseFiles(msg=GUI.messages["msgChooseJSON"], fileTypes=[("JSON", ".json"), ("txt", ".txt")], multiple=False)
+        print("CAM file is: ", CAMfile)
         numFilesCreated, numFilesFailed = fileHandling.splitFile(CAMfile, GUI.enterPrefix())
         GUI.completion("File split into " + str(numFilesCreated) + " files" + " while writing " + str(numFilesFailed) + " failed. Operation")
     except:
@@ -94,5 +108,9 @@ while True:
     elif operation == "btnAddPreffix":
         prefix2Filenames()  # Adding a prefix to chosen files
 
-    elif operation == "splitFile":
+    elif operation == "btnSplitFile":
         splitFile2Files()  # Splitting a single file containing data from multiple CAMs into several files with one file per CAM
+
+    elif operation == "btnCropSVGs":
+        print("cropping...")
+        svgs2cropped()  # Auto-cropping SVGs        
